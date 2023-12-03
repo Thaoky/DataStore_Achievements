@@ -1,0 +1,38 @@
+DataStore Changelog (dates in dd/mm/yyyy)
+===================
+
+
+Version 2023.11.06 (06/11/2023)
+
+- ToC Update for 10.2
+
+Version 2023.05.03 (03/05/2023)
+
+- ToC Update for 10.1
+
+Version 2023.02.23 (23/02/2023)
+
+- ToC Update for 10.0.05
+
+Version 2022.11.16 (16/11/2022)
+
+- ToC Update for 10.0.02
+
+Version 2022.11.02 (02/11/2022)
+
+- Added more Dragonflight categories to Enum.lua (Thanks Feral !)
+
+Version 2022.10.31 (31/10/2022)
+
+- Added Dragonflight categories to Enum.lua (Thanks Feral !)
+
+Version 2022.10.30 (30/10/2022)
+
+- ToC Update for 10.0
+
+Version 2022.10.25 (25/10/2022)
+
+- As of this version, DataStore modules will be released in a single package compatible with all versions of the game.
+- As of this version, the version number will no longer be 1.x or 9.x, but rather a date that clearly identifies when the release took place.
+
+- Minor changes to ensure compatibility with WotLK 3.4
