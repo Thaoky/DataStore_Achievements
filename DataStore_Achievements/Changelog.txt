@@ -2,6 +2,10 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.12.10 (10/12/2023)
+
+- TestBit now uses DataStore.TestBit.
+
 Version 2023.11.06 (06/11/2023)
 
 - ToC Update for 10.2

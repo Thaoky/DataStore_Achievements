@@ -48,13 +48,7 @@ local AddonDB_Defaults = {
 -- *** Utility functions ***
 local bAnd = bit.band
 local bOr = bit.bor
-
-local function TestBit(value, pos)
-   local mask = 2^pos
-   if bAnd(value, mask) == mask then
-      return true
-   end
-end
+local TestBit = DataStore.TestBit
 
 -- *** Scanning functions ***
 local CriteriaCache = {}
@@ -90,7 +84,7 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	
 	local storage		-- pointer to the destination location of this achievement's info (ie = character or account)
 
-	local isAccountBound = ( bit.band(flags, ACHIEVEMENT_FLAGS_ACCOUNT) == ACHIEVEMENT_FLAGS_ACCOUNT )
+	local isAccountBound = ( bAnd(flags, ACHIEVEMENT_FLAGS_ACCOUNT) == ACHIEVEMENT_FLAGS_ACCOUNT )
 
 	if isAccountBound then
 		-- if true, achievement is account wide, save in a shared location
