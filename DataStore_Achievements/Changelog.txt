@@ -2,6 +2,10 @@ DataStore Changelog (dates in dd/mm/yyyy)
 ===================
 
 
+Version 2023.12.29 (29/12/2023)
+
+- Added more Dragonflight categories to Enum.lua
+
 Version 2023.12.10 (10/12/2023)
 
 - TestBit now uses DataStore.TestBit.

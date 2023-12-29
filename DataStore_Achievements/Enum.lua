@@ -32,6 +32,8 @@ enum.AchievementCategories = {
 	QuestsShadowlands = 15422,
 	QuestsShadowlands92 = -98,
 	QuestsDragonflight = 15455,
+	QuestsDragonflight101 = -140,
+	QuestsDragonflight102 = -141,
 
 	Exploration = 97,
 	ExplorationExplorer = -8,
