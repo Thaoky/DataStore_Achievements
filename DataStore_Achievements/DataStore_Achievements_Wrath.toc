@@ -4,12 +4,10 @@
 
 ## Notes: Stores information about character achievements
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2023.12.29
+## Version: 2024.01.05
 ## Dependencies: DataStore
-## OptionalDeps: Ace3
-## SavedVariables: DataStore_AchievementsDB
+## SavedVariables: DataStore_Achievements_Characters, DataStore_Achievements_AccountWide
 ## X-Category: Interface Enhancements
-## X-Embeds: Ace3
 
 #Enum.lua
 DataStore_Achievements.lua
