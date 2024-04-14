@@ -8,7 +8,7 @@ local addonName, addon = ...
 local thisCharacter
 local accountWide
 
-local TableConcat, TableInsert, format, math, time = table.concat, table.insert, format, math, time
+local TableConcat, TableInsert, format, floor, select, time = table.concat, table.insert, format, math.floor, select, time
 local GetAchievementCriteriaInfoByID, GetAchievementNumCriteria, GetAchievementCriteriaInfo, GetAchievementInfo = GetAchievementCriteriaInfoByID, GetAchievementNumCriteria, GetAchievementCriteriaInfo, GetAchievementInfo
 local GetCategoryList, GetCategoryNumAchievements, GetPreviousAchievement, GetNumCompletedAchievements = GetCategoryList, GetCategoryNumAchievements, GetPreviousAchievement, GetNumCompletedAchievements
 local GetTotalAchievementPoints, GetInventorySlotInfo, GetInventoryItemLink, UnitGUID = GetTotalAchievementPoints, GetInventorySlotInfo, GetInventoryItemLink, UnitGUID
@@ -16,15 +16,15 @@ local isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 
 -- *** Utility functions ***
 local bAnd = bit.band
-local bit64 = DataStore.Bit64
+local bit64 = LibStub("LibBit64")
 
 local function DateToInt(month, day, year)
 	return year * 10000 + month * 100 + day
 end
 
 local function IntDateToStr(intDate)
-	local year = math.floor(intDate / 10000)
-	local month = math.floor((intDate % 10000) / 100)
+	local year = floor(intDate / 10000)
+	local month = floor((intDate % 10000) / 100)
 	local day = intDate % 100
 	
 	return format("%d:%d:%d", month, day, year)
@@ -54,7 +54,7 @@ local function ScanTabards()
 
 	for i = 1, #tabardCriteriaIDs do
 		criteriaID = tabardCriteriaIDs[i]
-		local _, _, isCompleted = GetAchievementCriteriaInfoByID(TABARDS_ACHIEVEMENT_ID, criteriaID)
+		isCompleted = select(3, GetAchievementCriteriaInfoByID(TABARDS_ACHIEVEMENT_ID, criteriaID))
 
 		tabards[criteriaID] = (isCompleted == true) and true or nil
 	end
@@ -99,10 +99,12 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	--]]
 
 	-- 1) Fully completed achievements
+	local index, bitPos
+	
 	if isCompleted and wasEarnedByMe then
 		local completed = storage.Completed
-		local bitPos = (id % 64)
-		local index = ceil(id / 64)
+		bitPos = (id % 64)
+		index = ceil(id / 64)
 
 		-- true when completed, all criterias are completed thus
 		completed[index] = bit64:SetBit((completed[index] or 0), bitPos)
@@ -131,9 +133,12 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	local hasProgress = false
 	wipe(CriteriaCache)
 
+
+	local critCompleted, quantity, reqQuantity, _
+	
 	for j = 1, num do
 		-- ** calling GetAchievementCriteriaInfo in this loop is what costs the most in terms of cpu time **
-		local _, _, critCompleted, quantity, reqQuantity = GetAchievementCriteriaInfo(id, j)
+		_, _, critCompleted, quantity, reqQuantity = GetAchievementCriteriaInfo(id, j)
 
 		-- MoP fix, some achievements not completed by current alt, but completed by another alt, return that the criteria is completed, even when it's not
 		-- This is visible for reputation achievements for example.
@@ -182,9 +187,11 @@ local function ScanAllAchievements()
 	local cats = GetCategoryList()
 	local prevID
 
-	for _, categoryID in ipairs(cats) do
+	local achievementID, achCompleted, month, day, year, flags, wasEarnedByMe, earnedBy, _
+
+	for k, categoryID in ipairs(cats) do
 		for i = 1, GetCategoryNumAchievements(categoryID) do
-			local achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(categoryID, i)
+			achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(categoryID, i)
 			if achievementID then
 				ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
 
@@ -192,7 +199,7 @@ local function ScanAllAchievements()
 				prevID = GetPreviousAchievement(achievementID)
 
 				while type(prevID) ~= "nil" do
-					local achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(prevID)
+					achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(prevID)
 					if not achievementID then break end	-- exit the loop if id is invalid
 					
 					ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
@@ -269,9 +276,10 @@ local function _GetCriteriaInfo(character, achievementID, criteriaIndex, isAccou
 	end
 
 	if type(achievement) == "string" then	-- string = multiple criteria
-
+		
+		local index, qty
 		for v in achievement:gmatch("([^,]+)") do
-			local index, qty = strsplit(":", v)
+			index, qty = strsplit(":", v)
 
 			index = tonumber(index)
 			qty = tonumber(qty)
@@ -347,8 +355,8 @@ local function _IsTabardKnown(character, criteriaID)
 	end
 end
 
-DataStore:OnAddonLoaded(addonName, function() 
-	DataStore:RegisterNewModule({
+DataStore:OnAddonLoaded(addonName, function()
+	DataStore:RegisterModule({
 		addon = addon,
 		addonName = addonName,
 		rawTables = {
