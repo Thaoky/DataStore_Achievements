@@ -1,12 +1,12 @@
-## Interface: 100206
+## Interface: 100207, 40400
 ## Title: DataStore_Achievements
 ## IconTexture: Interface\Icons\garrison_building_storehouse
 
 ## Notes: Stores information about character achievements
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2024.04.14
+## Version: 2024.05.10
 ## Dependencies: DataStore
-## SavedVariables: DataStore_Achievements_Characters, DataStore_Achievements_AccountWide
+## SavedVariables: DataStore_Achievements_Characters
 ## X-Category: Interface Enhancements
 
 Enum.lua
