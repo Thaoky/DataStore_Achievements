@@ -1,5 +1,3 @@
-if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then return end
-
 --[[
 Achievements-related enumerations
 
@@ -80,9 +78,17 @@ enum.AchievementCategories = {
 	DungeonGloryRaider = 14,
 	DungeonsOther = 19,
 
+	DungeonsUlduar10 = 14961,	-- Cataclysm
+	DungeonsUlduar25 = 14962,	-- Cataclysm
+	DungeonsCrusade10 = 15001,	-- Cataclysm
+	DungeonsCrusade25 = 15002,	-- Cataclysm
+	DungeonsIcecrow10 = 15041,	-- Cataclysm
+	DungeonsIcecrow25 = 15042,	-- Cataclysm
+
 	DungeonsClassic = 14808,
 	DungeonsBurningCrusade = 14805,
 	DungeonsLichKing = 14806,
+	DungeonsLichKingHeroic = 14921,	-- Cataclysm
 	DungeonsCataclysm = 15067,
 	DungeonsPandaria = 15106,
 	DungeonsDraenor = 15228,
@@ -155,6 +161,7 @@ enum.AchievementCategories = {
 	ProfessionsCookingCook = 24,
 	ProfessionsCookingDailyQuests = 25,
 	ProfessionsFishing = 171,
+	ProfessionsFirstAid = 172,			-- Cataclysm
 	ProfessionsFishingDragonflight = -139,
 	ProfessionsFishingLevel = 26,
 	ProfessionsFishingFishUp = 27,
