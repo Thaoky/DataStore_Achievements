@@ -71,6 +71,7 @@ enum.AchievementCategories = {
 	PvPTempleOfKotmogu = 15163,
 	PvPSeethingShore = 15292,
 	PvPDeepwindGorge = 15218,
+	PvPStrandOfTheAncients = 14881,
 
 	Dungeons = 168,
 	DungeonHero = 12,
