@@ -313,7 +313,8 @@ local function _GetCriteriaInfo(character, achievementID, criteriaIndex, isAccou
 	local achievement = character.PartialBits[achievementID]
 	-- if we have partial bits.. check them
 	if achievement then
-		local icCompleted = bit64:TestBit(achievement, criteriaIndex - 1)
+		-- no need for "criteriaIndex - 1" because we do not save partials in bit 0
+		local icCompleted = bit64:TestBit(achievement, criteriaIndex)
 		
 		if icCompleted then
 			return true, true			-- .. then criteria is started and completed
