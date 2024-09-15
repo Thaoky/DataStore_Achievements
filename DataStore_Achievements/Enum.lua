@@ -49,6 +49,12 @@ enum.AchievementCategories = {
 	ExplorationShadowlands = 15436,
 	ExplorationShadowlands92 = -99,
 	ExplorationDragonflight = 15465,
+	
+	Delves = 15522,
+	DelvesWarWithin = 15523,
+	DelvesWarWithinTiers = -142,
+	DelvesWarWithinStories = -143,
+	DelvesWarWithinDiscoveries = -144,
 
 	PvP = 95,
 	PvPHonorableKills = -9,
