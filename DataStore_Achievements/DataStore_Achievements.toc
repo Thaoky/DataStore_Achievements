@@ -1,11 +1,11 @@
-## Interface: 110005, 40400
+## Interface: 110007, 40400
 ## Title: DataStore_Achievements
 ## IconTexture: Interface\Icons\garrison_building_storehouse
 
 ## Notes: Stores information about character achievements
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2024.11.11
-## Dependencies: DataStore
+## Version: 2024.12.22
+## Dependencies: AddonFactory, DataStore
 ## SavedVariables: DataStore_Achievements_Characters
 ## X-Category: Interface Enhancements
 

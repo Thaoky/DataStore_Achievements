@@ -217,6 +217,8 @@ enum.AchievementCategories = {
 	WorldEventsDarkmoonRealRace = -47,
 	WorldEventsDarkmoonRealBigRace = -48,
 	WorldEventsBrawlersGuild = 15282,
+	WorldEventsTimewalking = 15454,
+	WorldEventsAnniversary = 15532,
 
 	PetBattles = 15117,
 	PetBattlesCollect = 15118,
@@ -303,5 +305,17 @@ enum.AchievementCategories = {
 	FeatsOfStrengthPromotionsBlizzCon = -95,
 	FeatsOfStrengthPromotionsCollector = -96,
 	FeatsOfStrengthRealmFirst = -97,
+	
+	Legacy = 15234,
+	LegacyCharacter = 15446,
+	LegacyQuests = 15447,
+	LegacyPvP = 15279,
+	LegacyDungeons = 15277,
+	LegacyRaids = 15278,
+	LegacyProfessions = 172,
+	LegacyCurrencies = 15280,
+	LegacyWorldEvents = 15416,
+	LegacyExpansionFeatures = 15411,
+	LegacyRemixPandaria = 15536,
 
 }

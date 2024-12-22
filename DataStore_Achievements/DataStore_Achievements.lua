@@ -98,7 +98,10 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	if isCompleted and wasEarnedByMe then
 		local completed = storage.Completed
 		bitPos = (id % 64)
-		index = ceil(id / 64)
+		index = ceil(id / 64)		-- this should be math.floor, not ceil
+		-- math.floor(63 / 64) results in 0, which correctly maps to the first 64-bit number.
+		-- math.ceil(63 / 64) results in 1, which would incorrectly map to the second 64-bit number.
+		-- changing would break the DB, keep that for major patch. Needs testing.
 
 		-- true when completed, all criterias are completed thus
 		completed[index] = bit64:SetBit((completed[index] or 0), bitPos)
@@ -460,7 +463,7 @@ local function _IsTabardKnown(character, criteriaID)
 	end
 end
 
-DataStore:OnAddonLoaded(addonName, function()
+AddonFactory:OnAddonLoaded(addonName, function()
 	DataStore:RegisterModule({
 		addon = addon,
 		addonName = addonName,
@@ -494,7 +497,7 @@ DataStore:OnAddonLoaded(addonName, function()
 	end
 end)
 
-DataStore:OnPlayerLogin(function() 
+AddonFactory:OnPlayerLogin(function() 
 	addon:ListenTo("PLAYER_ALIVE", function()
 		-- for some reason, since 4.1, the event seems to be triggered repeatedly when a player releases after death, I could not clearly identify the cause
 		-- but I could reproduce the issue and work around it by unregistering the event.
