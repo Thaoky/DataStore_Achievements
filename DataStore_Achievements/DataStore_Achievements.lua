@@ -168,6 +168,29 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	end
 end
 
+local function ScanCategory(categoryID)
+	local achievementID, achCompleted, month, day, year, flags, wasEarnedByMe, earnedBy, _
+	local prevID
+
+	for i = 1, GetCategoryNumAchievements(categoryID) do
+		achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(categoryID, i)
+		if achievementID then
+			ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
+
+			-- track previous steps of a progressive achievements
+			prevID = GetPreviousAchievement(achievementID)
+
+			while type(prevID) ~= "nil" do
+				achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(prevID)
+				if not achievementID then break end	-- exit the loop if id is invalid
+
+				ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
+				prevID = GetPreviousAchievement(achievementID)
+			end
+		end
+	end
+end
+
 local function ScanAllAchievements()
 	-- 2021/06/25 : do not wipe information about fully completed achievements, they will not go "uncompleted" any time soon.
 	-- The reason is that achievements that are both horde and alliance have different id's, and wiping would cancel the achievement
@@ -176,30 +199,25 @@ local function ScanAllAchievements()
 	wipe(thisCharacter.Partial)
 	wipe(thisCharacter.PartialBits)
 
+	-- Run the scan in chunks across frames. Doing it all in one synchronous
+	-- pass exceeds WoW's "script ran too long" budget on 12.0+ (170+ categories
+	-- with progressive achievement chains => tens of thousands of API calls).
 	local cats = GetCategoryList()
-	local prevID
+	local idx = 1
+	local CATEGORIES_PER_FRAME = 15
 
-	local achievementID, achCompleted, month, day, year, flags, wasEarnedByMe, earnedBy, _
-
-	for k, categoryID in ipairs(cats) do
-		for i = 1, GetCategoryNumAchievements(categoryID) do
-			achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(categoryID, i)
-			if achievementID then
-				ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
-
-				-- track previous steps of a progressive achievements
-				prevID = GetPreviousAchievement(achievementID)
-
-				while type(prevID) ~= "nil" do
-					achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(prevID)
-					if not achievementID then break end	-- exit the loop if id is invalid
-					
-					ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
-					prevID = GetPreviousAchievement(achievementID)
-				end
-			end
+	local function ProcessBatch()
+		local endIdx = math.min(idx + CATEGORIES_PER_FRAME - 1, #cats)
+		while idx <= endIdx do
+			ScanCategory(cats[idx])
+			idx = idx + 1
+		end
+		if idx <= #cats then
+			C_Timer.After(0, ProcessBatch)
 		end
 	end
+
+	ProcessBatch()
 end
 
 local function ScanProgress()
