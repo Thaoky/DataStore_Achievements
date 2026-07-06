@@ -203,21 +203,31 @@ local function ScanAllAchievements()
 	-- pass exceeds WoW's "script ran too long" budget on 12.0+ (170+ categories
 	-- with progressive achievement chains => tens of thousands of API calls).
 	local cats = GetCategoryList()
-	local idx = 1
-	local CATEGORIES_PER_FRAME = 15
-
-	local function ProcessBatch()
-		local endIdx = math.min(idx + CATEGORIES_PER_FRAME - 1, #cats)
-		while idx <= endIdx do
-			ScanCategory(cats[idx])
-			idx = idx + 1
-		end
-		if idx <= #cats then
-			C_Timer.After(0, ProcessBatch)
-		end
+	
+	-- NOTE 2026/07/06: do not use this approach, the C_Timer kills performance at startup
+	-- Do it like before for the moment, we will fix this later.
+	
+	for _, categoryID in ipairs(cats) do
+		ScanCategory(categoryID)
 	end
+	
+	-- local idx = 1
+	-- local CATEGORIES_PER_FRAME = 15
 
-	ProcessBatch()
+	-- local function ProcessBatch()
+		-- local endIdx = math.min(idx + CATEGORIES_PER_FRAME - 1, #cats)
+		
+		-- while idx <= endIdx do
+			-- ScanCategory(cats[idx])
+			-- idx = idx + 1
+		-- end
+		
+		-- if idx <= #cats then
+			-- C_Timer.After(2.0, ProcessBatch)
+		-- end
+	-- end
+
+	-- ProcessBatch()
 end
 
 local function ScanProgress()
