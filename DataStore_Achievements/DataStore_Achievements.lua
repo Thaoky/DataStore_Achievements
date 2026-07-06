@@ -172,7 +172,7 @@ local function ScanCategory(categoryID)
 	local achievementID, achCompleted, month, day, year, flags, wasEarnedByMe, earnedBy, _
 	local prevID
 
-	for i = 1, GetCategoryNumAchievements(categoryID) do
+	for i = 1, GetCategoryNumAchievements(categoryID) or 0 do
 		achievementID, _, _, achCompleted, month, day, year, _, flags,_, _, _, wasEarnedByMe, earnedBy = GetAchievementInfo(categoryID, i)
 		if achievementID then
 			ScanSingleAchievement(achievementID, achCompleted, month, day, year, flags, wasEarnedByMe)
