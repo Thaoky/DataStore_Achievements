@@ -1,10 +1,10 @@
-## Interface: 120100, 50504, 20505, 11508
+## Interface: 120105, 50504, 20506, 11509
 ## Title: DataStore_Achievements
 ## IconTexture: Interface\Icons\garrison_building_storehouse
 
 ## Notes: Stores information about character achievements
 ## Author: Thaoky (EU-Marécages de Zangar)
-## Version: 2026.09.30
+## Version: 2026.10.14
 ## Dependencies: AddonFactory, DataStore
 ## SavedVariables: DataStore_Achievements_Characters
 ## X-Category: Interface Enhancements
